@@ -1,8 +1,16 @@
 using CarWorkshop.Application.Extensions;
 using CarWorkshop.Infrastructure.Extensions;
 using CarWorkshop.Infrastructure.Seeders;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using CarWorkshop.Infrastructure.Persistent;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("CarWorkshopDbContextConnection") ?? throw new InvalidOperationException("Connection string 'CarWorkshopDbContextConnection' not found.");
+
+builder.Services.AddDbContext<CarWorkshopDbContext>(options => options.UseSqlServer(connectionString));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
@@ -10,9 +18,19 @@ builder.Services.AddControllersWithViews(options => options.SuppressImplicitRequ
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
+var configuration = builder.Configuration;
+
+builder.Services.AddAuthentication().AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+});
+
+builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
+
 var app = builder.Build();
 
-var scope = app.Services.CreateScope(); //Wyci¹gniecie wszystkich servicow z cyklem scoped
+var scope = app.Services.CreateScope(); //Wyciï¿½gniecie wszystkich servicow z cyklem scoped
 
 var seeder = scope.ServiceProvider.GetRequiredService<CarWorkshopSeeder>(); // wyciagniecie konkretnie servicu CarWorkshopSeeder
 
