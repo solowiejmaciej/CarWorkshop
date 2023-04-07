@@ -1,0 +1,44 @@
+﻿@model List<Person>
+<!-- Zdefiniowanie typu obiektu przekazanego w View dla kontrolera Privacy-->
+
+@{
+    ViewData["Title"] = "Privacy Policy";
+	var currentYear = DateTime.Now.Year;
+	var dayOfWeek = DateTime.Now.DayOfWeek;
+
+}
+
+<h1>@ViewData["Title"] - @currentYear </h1>
+<p>Use this page to detail your site's privacy policy.</p>
+
+@if (dayOfWeek == DayOfWeek.Monday)
+{
+	<p>It's sad monday today, isn't it?</p>
+}
+else
+{
+	<p>It's not monday, how cool is that?</p>
+}
+
+@switch (dayOfWeek)
+{
+	case DayOfWeek.Monday:
+		<p>It's monday :(</p>
+		break;
+
+	default:
+		<p>Atleast it's not monday huh?</p>
+		break;
+}
+
+<table style ="border: 1px solid black;">
+	<th style ="border: 1px solid black;">First name </th>
+	<th style ="border: 1px solid black;">Last name</th>
+	@foreach (var person in Model)
+	{
+		<tr style ="border: 1px solid black;">
+			<td style ="border: 1px solid black;"> @person.FirstName</td>
+			<td style ="border: 1px solid black;">@person.LastName</td>
+		</tr>
+	}
+</table>
