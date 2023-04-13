@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("CarWorkshopDbContextConnection") ?? throw new InvalidOperationException("Connection string 'CarWorkshopDbContextConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("CarWorkshop-Dev") ?? throw new InvalidOperationException("Connection string 'CarWorkshop-Dev' not found.");
 
 builder.Services.AddDbContext<CarWorkshopDbContext>(options => options.UseSqlServer(connectionString));
 
@@ -32,7 +32,7 @@ var app = builder.Build();
 
 var scope = app.Services.CreateScope(); //Wyci�gniecie wszystkich servicow z cyklem scoped
 
-var seeder = scope.ServiceProvider.GetRequiredService<CarWorkshopSeeder>(); // wyciagniecie konkretnie servicu CarWorkshopSeeder
+var seeder = scope.ServiceProvider.GetRequiredService<CarWorkshopSeeder>();
 
 await seeder.Seed(); //Seedowanie
 

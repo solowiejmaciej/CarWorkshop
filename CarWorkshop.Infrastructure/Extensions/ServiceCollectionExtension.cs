@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CarWorkshop.Domain.Interfaces;
+﻿using CarWorkshop.Domain.Interfaces;
 using CarWorkshop.Infrastructure.Persistent;
 using CarWorkshop.Infrastructure.Repositories;
 using CarWorkshop.Infrastructure.Seeders;
@@ -22,6 +17,7 @@ namespace CarWorkshop.Infrastructure.Extensions
                 configuration.GetConnectionString("CarWorkshop-Dev")));
 
             services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<CarWorkshopDbContext>();
 
             services.AddScoped<CarWorkshopSeeder>();
