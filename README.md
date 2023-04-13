@@ -1,2 +1,6 @@
 # CarWorkshop
-This website supports Login/Register with google and 2FA via QR code using google authenticator.
+Support for:
+* External login with google
+* 2FA
+* Roles
+* CRUD operations
